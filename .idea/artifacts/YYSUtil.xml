@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="YYSUtil">
+    <output-path>$PROJECT_DIR$/out/artifacts/YYSUtil</output-path>
+    <root id="archive" name="YYSUtil.jar">
+      <element id="module-output" name="YYSUtil" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>
