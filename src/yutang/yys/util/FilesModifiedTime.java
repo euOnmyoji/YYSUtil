@@ -11,6 +11,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 一个文件夹以及里面文件的修改时间
+ * 仅用于equals 不用于查询
+ */
 public class FilesModifiedTime {
     private FileTime time;
     private List<FilesModifiedTime> list = new ArrayList<>();
