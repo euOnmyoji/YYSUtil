@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Iterator;
 
 public class Util {
     /**
@@ -31,6 +32,18 @@ public class Util {
                     Files.copy(f.toPath(), path.resolve(f.getName()), StandardCopyOption.REPLACE_EXISTING);
                 }
             }
+        }
+    }
+
+    public static void deleteAll(Path... paths) throws IOException {
+        for (Path path : paths) {
+            if (Files.isDirectory(path)) {
+                Iterator<Path> ps = Files.list(path).iterator();
+                while (ps.hasNext()) {
+                    Files.delete(ps.next());
+                }
+            }
+            Files.delete(path);
         }
     }
 }
