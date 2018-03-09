@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * @author yys
  * 一个文件夹以及里面文件的修改时间
  * 仅用于equals 不用于查询
  */
