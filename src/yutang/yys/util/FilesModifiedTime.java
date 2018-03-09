@@ -19,7 +19,6 @@ public class FilesModifiedTime {
     private FileTime time;
     private List<FilesModifiedTime> list = new ArrayList<>();
 
-    @SuppressWarnings("WeakerAccess")
     public FilesModifiedTime(@NotNull Path path) throws IOException {
         time = Files.getLastModifiedTime(path);
         if (Files.isDirectory(path)) {
