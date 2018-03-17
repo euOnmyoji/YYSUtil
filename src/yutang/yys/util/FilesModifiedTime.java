@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,18 +16,18 @@ import java.util.Objects;
  * 仅用于equals 不用于查询
  */
 public class FilesModifiedTime {
-    private FileTime time;
-    private List<FilesModifiedTime> list = new ArrayList<>();
+    private List<FileTime> value;
 
     public FilesModifiedTime(@NotNull Path path) throws IOException {
-        time = Files.getLastModifiedTime(path);
-        if (Files.isDirectory(path)) {
-            Iterator<Path> i = Files.list(path).iterator();
-            while (i.hasNext()) {
-                Path p = i.next();
-                list.add(new FilesModifiedTime(p));
+        List<FileTime> value = new ArrayList<>();
+        Files.walk(path).forEach(p -> {
+            try {
+                value.add(Files.getLastModifiedTime(p));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        }
+        });
+        this.value = value;
     }
 
     @Override
@@ -36,12 +35,12 @@ public class FilesModifiedTime {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FilesModifiedTime that = (FilesModifiedTime) o;
-        return Objects.equals(time, that.time) &&
-                Objects.equals(list, that.list);
+        return Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(time, list);
+
+        return Objects.hash(value);
     }
 }
