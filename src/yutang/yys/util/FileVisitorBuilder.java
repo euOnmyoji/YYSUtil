@@ -6,7 +6,7 @@ import java.nio.file.FileVisitor;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
-public class FileVisitorBuilder<T> extends SimpleFileVisitor<T> {
+public class FileVisitorBuilder<T> {
     private Function<T, BasicFileAttributes, FileVisitResult> preVisitDirectory;
     private Function<T, BasicFileAttributes, FileVisitResult> visitFile;
     private Function<T, IOException, FileVisitResult> visitFileFailed;
@@ -33,25 +33,25 @@ public class FileVisitorBuilder<T> extends SimpleFileVisitor<T> {
     }
 
     public FileVisitor<T> build() {
-        return new FileVisitor<T>() {
+        return new SimpleFileVisitor<T>() {
             @Override
             public FileVisitResult preVisitDirectory(T dir, BasicFileAttributes attrs) throws IOException {
-                return preVisitDirectory != null ? preVisitDirectory.run(dir, attrs) : FileVisitorBuilder.super.preVisitDirectory(dir, attrs);
+                return preVisitDirectory != null ? preVisitDirectory.run(dir, attrs) : super.preVisitDirectory(dir, attrs);
             }
 
             @Override
             public FileVisitResult visitFile(T file, BasicFileAttributes attrs) throws IOException {
-                return visitFile != null ? visitFile.run(file, attrs) : FileVisitorBuilder.super.visitFile(file, attrs);
+                return visitFile != null ? visitFile.run(file, attrs) : super.visitFile(file, attrs);
             }
 
             @Override
             public FileVisitResult visitFileFailed(T file, IOException exc) throws IOException {
-                return visitFileFailed != null ? visitFileFailed.run(file, exc) : FileVisitorBuilder.super.visitFileFailed(file, exc);
+                return visitFileFailed != null ? visitFileFailed.run(file, exc) : super.visitFileFailed(file, exc);
             }
 
             @Override
             public FileVisitResult postVisitDirectory(T dir, IOException exc) throws IOException {
-                return postVisitDirectory != null ? postVisitDirectory.run(dir, exc) : FileVisitorBuilder.super.postVisitDirectory(dir, exc);
+                return postVisitDirectory != null ? postVisitDirectory.run(dir, exc) : super.postVisitDirectory(dir, exc);
             }
         };
     }
