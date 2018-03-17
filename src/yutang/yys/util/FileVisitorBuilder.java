@@ -6,28 +6,34 @@ import java.nio.file.FileVisitor;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
+/**
+ * FileVisitorBuilder
+ *
+ * @param <T> 接受的类型
+ * @author yys
+ */
 public class FileVisitorBuilder<T> {
-    private Function<T, BasicFileAttributes, FileVisitResult> preVisitDirectory;
-    private Function<T, BasicFileAttributes, FileVisitResult> visitFile;
-    private Function<T, IOException, FileVisitResult> visitFileFailed;
-    private Function<T, IOException, FileVisitResult> postVisitDirectory;
+    private F<T, BasicFileAttributes, FileVisitResult> preVisitDirectory;
+    private F<T, BasicFileAttributes, FileVisitResult> visitFile;
+    private F<T, IOException, FileVisitResult> visitFileFailed;
+    private F<T, IOException, FileVisitResult> postVisitDirectory;
 
-    public FileVisitorBuilder<T> visitFile(Function<T, BasicFileAttributes, FileVisitResult> vistFile) {
+    public FileVisitorBuilder<T> visitFile(F<T, BasicFileAttributes, FileVisitResult> vistFile) {
         this.visitFile = vistFile;
         return this;
     }
 
-    public FileVisitorBuilder<T> visitFileFailed(Function<T, IOException, FileVisitResult> visitFileFailed) {
+    public FileVisitorBuilder<T> visitFileFailed(F<T, IOException, FileVisitResult> visitFileFailed) {
         this.visitFileFailed = visitFileFailed;
         return this;
     }
 
-    public FileVisitorBuilder<T> postVisitDirectory(Function<T, IOException, FileVisitResult> postVisitDirectory) {
+    public FileVisitorBuilder<T> postVisitDirectory(F<T, IOException, FileVisitResult> postVisitDirectory) {
         this.postVisitDirectory = postVisitDirectory;
         return this;
     }
 
-    public FileVisitorBuilder<T> preVisitDirectory(Function<T, BasicFileAttributes, FileVisitResult> preVisitDirectory) {
+    public FileVisitorBuilder<T> preVisitDirectory(F<T, BasicFileAttributes, FileVisitResult> preVisitDirectory) {
         this.preVisitDirectory = preVisitDirectory;
         return this;
     }
@@ -57,7 +63,7 @@ public class FileVisitorBuilder<T> {
     }
 
     @FunctionalInterface
-    public interface Function<T, U, R> {
+    public interface F<T, U, R> {
         R run(T t, U u) throws IOException;
     }
 }
